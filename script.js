@@ -43,25 +43,63 @@ if (portfolioContainer && window.PortfolioManager) {
     window.PortfolioManager.renderToContainer(portfolioContainer);
 }
 
+/*  INTERACTIVE PORTFOLIO CATEGORY FILTER  */
+const filterButtons = document.querySelectorAll('.filter-btn');
+if (filterButtons.length > 0 && portfolioContainer) {
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const filterValue = btn.getAttribute('data-filter');
+            const allProjects = window.PortfolioManager ? window.PortfolioManager.getProjects() : [];
+
+            if (filterValue === 'all') {
+                window.PortfolioManager.renderToContainer(portfolioContainer);
+            } else {
+                const filtered = allProjects.filter(p => {
+                    const cat = (p.category || '').toLowerCase();
+                    const title = (p.title || '').toLowerCase();
+                    const search = filterValue.toLowerCase();
+                    return cat.includes(search) || title.includes(search);
+                });
+                portfolioContainer.replaceChildren(...filtered.map(p => window.PortfolioManager.createProjectCardElement(p)));
+            }
+        });
+    });
+}
+
 /* SCROLL REVEAL  */
 ScrollReveal({
     distance: '80px',
-    duration: 2000,
-    delay: 200
+    duration: 1800,
+    delay: 150
 });
 
 ScrollReveal().reveal('.home-content, .heading', { origin: 'top' });
-ScrollReveal().reveal('.home-img, .service-container, .portfolio-box, .contact', { origin: 'bottom' });
+ScrollReveal().reveal('.home-img, .service-container, .portfolio-box, .contact-grid', { origin: 'bottom' });
 ScrollReveal().reveal('.home-content h1, .about-img', { origin: 'left' });
 ScrollReveal().reveal('.home-content p, .about-content', { origin: 'right' });
 
 /*  TYPED JS  */
 const typed = new Typed('.multiple-text', {
-    strings: ['Freelancer', 'Designer', 'Web/Software Developer'],
-    typeSpeed: 100,
-    backSpeed: 100,
-    backDelay: 100,
+    strings: [
+        'Full-Stack Developer',
+        'AWS Cloud Engineer',
+        'MERN Stack Developer',
+        'AI & Machine Learning Dev'
+    ],
+    typeSpeed: 80,
+    backSpeed: 50,
+    backDelay: 1200,
     loop: true
+});
+
+/*  ADMIN DASHBOARD SHORTCUT (Ctrl + Shift + A)  */
+window.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+        window.location.href = 'admin.html';
+    }
 });
 
 /*  EMAILJS CONTACT FORM */

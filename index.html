@@ -5,17 +5,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio </title>
+    <title>Eranda Hashan | Full-Stack &amp; Cloud Developer Portfolio</title>
+    <meta name="description" content="Portfolio of Eranda Hashan - Full-Stack Developer, Cloud & DevOps Engineer, and AI/ML Enthusiast from Sri Lanka.">
 
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-
-
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-
 </head>
 
 <body>
+    <!-- Ambient Background Glowing Orbs -->
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    <div class="ambient-orb orb-3"></div>
+
     <header class="header">
         <a href="#" class="logo">&lt;Eranda Hashan/&gt;</a>
 
@@ -26,28 +29,55 @@
             <a href="#services">Services</a>
             <a href="#portfolio">Projects</a>
             <a href="#contact">Contact</a>
-            <a href="assets/Eranda_Hashan.pdf" class="btn"
-                style="padding: .5rem 1.5rem; font-size: 1.5rem; margin-left: 2rem;">Download CV</a>
+            <a href="assets/Eranda_Hashan.pdf" class="btn-nav-cv" download><i class='bx bx-download'></i> Resume</a>
         </nav>
     </header>
+
     <section class="home" id="home">
         <div class="home-content">
-            <h3>Hello, It's Me</h3>
-            <h1>Eranda Hashan</h1>
-            <h3>And I'm a <span class="multiple-text"> </span></h3>
-            <div class="social-media">
-
-                <a href="https://lk.linkedin.com/in/eranda-hashan-405438254" aria-label="LinkedIn"><i
-                        class='bx bxl-linkedin'></i></a>
-                <a href="https://github.com/Ehashan" aria-label="GitHub"><i class='bx bxl-github'></i></a>
-                <a href="#" aria-label="Facebook"><i class='bx bxl-facebook'></i></a>
-                <a href="#" aria-label="Instagram"><i class='bx bxl-instagram'></i></a>
+            <div class="status-badge">
+                <span class="status-dot"></span>
+                <span>Available for Full-time &amp; Freelance Work</span>
             </div>
-            <a href="assets/Eranda_Hashan.pdf" class="btn" download>Download CV</a>
+            <h3 class="hero-greeting">Hello, It's Me</h3>
+            <h1 class="hero-name">Eranda Hashan</h1>
+            <h3 class="hero-role">And I'm a <span class="multiple-text"></span></h3>
+
+
+            <div class="hero-actions">
+                <div class="hero-btns">
+                    <a href="#portfolio" class="btn"><i class='bx bx-rocket'></i> Explore Projects</a>
+                    <a href="assets/Eranda_Hashan.pdf" class="btn btn-outline" download><i class='bx bx-download'></i> Download CV</a>
+                </div>
+
+                <div class="social-media">
+                    <a href="https://lk.linkedin.com/in/eranda-hashan-405438254" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn"><i class='bx bxl-linkedin'></i></a>
+                    <a href="https://github.com/Ehashan" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub"><i class='bx bxl-github'></i></a>
+                    <a href="mailto:Erandahashan0103@gmail.com" aria-label="Email" title="Email Me"><i class='bx bx-envelope'></i></a>
+                    <a href="#" aria-label="Facebook" title="Facebook"><i class='bx bxl-facebook'></i></a>
+                    <a href="#" aria-label="Instagram" title="Instagram"><i class='bx bxl-instagram'></i></a>
+                </div>
+            </div>
 
         </div>
+
         <div class="home-img">
-            <img src="images/my.png" alt="">
+            <div class="avatar-glow-ring"></div>
+            <img src="images/my.png" alt="Eranda Hashan - Software Developer">
+
+            <!-- Floating Tech Badges -->
+            <div class="floating-badge badge-react">
+                <i class='bx bxl-react'></i> <span>React &amp; MERN</span>
+            </div>
+            <div class="floating-badge badge-aws">
+                <i class='bx bxl-aws'></i> <span>AWS Cloud</span>
+            </div>
+            <div class="floating-badge badge-python">
+                <i class='bx bxl-python'></i> <span>Python &amp; ML</span>
+            </div>
+            <div class="floating-badge badge-code">
+                <i class='bx bx-code-block'></i> <span>Full Stack</span>
+            </div>
         </div>
     </section>
 
@@ -57,7 +87,7 @@
         </div>
         <div class="about-content">
             <h2 class="heading">About <span>Me</span></h2>
-            <h3>And I'm an <span class="multiple-text"> </span></h3>
+            <h3>Aspiring <span>Software &amp; Cloud Engineer</span></h3>
             <p>undergraduate student currently in my fourth year at Horizon Campus,
                 pursuing a BSc (Hons) degree
                 in Information Communication. Hailing from Sri Lanka, I reside in the Western Province, specifically in
@@ -162,7 +192,16 @@
     </section>
 
     <section class="portfolio" id="portfolio">
-        <h2 class="heading">Latest<span>Projects</span></h2>
+        <h2 class="heading">Latest <span>Projects</span></h2>
+
+        <!-- Interactive Portfolio Filters -->
+        <div class="portfolio-filters">
+            <button class="filter-btn active" data-filter="all"><i class='bx bx-grid-alt'></i> All Projects</button>
+            <button class="filter-btn" data-filter="Full Stack"><i class='bx bx-code-alt'></i> Full Stack</button>
+            <button class="filter-btn" data-filter="Cloud"><i class='bx bxl-aws'></i> Cloud &amp; DevOps</button>
+            <button class="filter-btn" data-filter="AI"><i class='bx bx-brain'></i> AI &amp; ML</button>
+            <button class="filter-btn" data-filter="Mobile"><i class='bx bxl-android'></i> Mobile App</button>
+        </div>
 
         <div class="portfolio-container">
 
@@ -371,21 +410,69 @@
     <section class="contact" id="contact">
         <h2 class="heading">Contact <span>Me!</span></h2>
 
-        <form id="contact-form">
-            <div class="input-box">
-                <input type="text" name="name" placeholder="Full Name" required>
-                <input type="email" name="email" placeholder="Email Address" required>
+        <div class="contact-grid">
+            <!-- Contact Info Cards -->
+            <div class="contact-info-list">
+                <div class="contact-card-item">
+                    <div class="contact-icon-box">
+                        <i class='bx bx-envelope'></i>
+                    </div>
+                    <div class="contact-text-box">
+                        <h4>Email Address</h4>
+                        <a href="mailto:Erandahashan0103@gmail.com">Erandahashan0103@gmail.com</a>
+                    </div>
+                </div>
+
+                <div class="contact-card-item">
+                    <div class="contact-icon-box">
+                        <i class='bx bxl-linkedin'></i>
+                    </div>
+                    <div class="contact-text-box">
+                        <h4>LinkedIn</h4>
+                        <a href="https://lk.linkedin.com/in/eranda-hashan-405438254" target="_blank" rel="noopener noreferrer">linkedin.com/in/eranda-hashan</a>
+                    </div>
+                </div>
+
+                <div class="contact-card-item">
+                    <div class="contact-icon-box">
+                        <i class='bx bxl-github'></i>
+                    </div>
+                    <div class="contact-text-box">
+                        <h4>GitHub</h4>
+                        <a href="https://github.com/Ehashan" target="_blank" rel="noopener noreferrer">github.com/Ehashan</a>
+                    </div>
+                </div>
+
+                <div class="contact-card-item">
+                    <div class="contact-icon-box">
+                        <i class='bx bx-map-pin'></i>
+                    </div>
+                    <div class="contact-text-box">
+                        <h4>Location</h4>
+                        <p>Colombo, Western Province, Sri Lanka</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="input-box">
-                <input type="text" name="phone" placeholder="Mobile Number">
-                <input type="text" name="subject" placeholder="Subject">
+            <!-- Contact Form Container -->
+            <div class="contact-form-container">
+                <form id="contact-form">
+                    <div class="input-box">
+                        <input type="text" name="name" placeholder="Full Name" required>
+                        <input type="email" name="email" placeholder="Email Address" required>
+                    </div>
+
+                    <div class="input-box">
+                        <input type="text" name="phone" placeholder="Mobile Number">
+                        <input type="text" name="subject" placeholder="Subject">
+                    </div>
+
+                    <textarea name="message" cols="30" rows="6" placeholder="Your Message" required></textarea>
+
+                    <button type="submit" class="btn"><i class='bx bx-send'></i> Send Message</button>
+                </form>
             </div>
-
-            <textarea name="message" cols="30" rows="10" placeholder="Your Message" required></textarea>
-
-            <input type="submit" value="Send Message" class="btn">
-        </form>
+        </div>
     </section>
 
 
