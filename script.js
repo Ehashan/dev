@@ -84,10 +84,10 @@ ScrollReveal().reveal('.home-content p, .about-content', { origin: 'right' });
 /*  TYPED JS  */
 const typed = new Typed('.multiple-text', {
     strings: [
-        'Aspiring Full-Stack Developer',
+        'Next.js & Full-Stack Developer',
+        'Aspiring Cloud Engineer',
         'Passionate Coder',
         'DevOps Learner',
-        'Software Engineering Enthusiast',
         'Problem Solver'
     ],
     typeSpeed: 70,

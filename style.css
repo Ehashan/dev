@@ -481,15 +481,23 @@ section {
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(8, 203, 0, 0.45);
 }
 
-.floating-badge i {
+.floating-badge i,
+.floating-badge svg {
     font-size: 2.2rem;
+    width: 2.2rem;
+    height: 2.2rem;
     color: var(--main-color);
+    fill: var(--main-color);
+    display: inline-block;
+    vertical-align: middle;
 }
 
-.badge-react { top: 12%; left: -6%; animation: floatBadge1 4s ease-in-out infinite; }
+.badge-react,
+.badge-nextjs { top: 12%; left: -6%; animation: floatBadge1 4s ease-in-out infinite; }
 .badge-aws { top: 18%; right: -6%; animation: floatBadge2 4.6s ease-in-out infinite; }
 .badge-python { bottom: 18%; left: -4%; animation: floatBadge3 5s ease-in-out infinite; }
-.badge-code { bottom: 8%; right: -2%; animation: floatBadge1 4.2s ease-in-out infinite; }
+.badge-code,
+.badge-postgres { bottom: 8%; right: -2%; animation: floatBadge1 4.2s ease-in-out infinite; }
 
 @keyframes floatBadge1 {
     0%, 100% { transform: translateY(0); }
@@ -673,10 +681,16 @@ section {
     user-select: none;
 }
 
-.skill-item i {
+.skill-item i,
+.skill-item svg {
     font-size: 1.65rem;
+    width: 1.65rem;
+    height: 1.65rem;
     color: #ffffff;
-    transition: color 0.2s ease;
+    fill: currentColor;
+    transition: color 0.2s ease, fill 0.2s ease;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .skill-item:hover {
@@ -687,8 +701,10 @@ section {
     transform: translateY(-3px) scale(1.04);
 }
 
-.skill-item:hover i {
+.skill-item:hover i,
+.skill-item:hover svg {
     color: #111;
+    fill: #111;
 }
 
 /* Responsive for skills */
@@ -1231,10 +1247,12 @@ section {
         padding: 0.7rem 1.2rem;
         font-size: 1.1rem;
     }
-    .badge-react { top: 0; left: -2%; }
+    .badge-react,
+    .badge-nextjs { top: 0; left: -2%; }
     .badge-aws { top: 8%; right: -2%; }
     .badge-python { bottom: 5%; left: 0; }
-    .badge-code { bottom: 0; right: 0; }
+    .badge-code,
+    .badge-postgres { bottom: 0; right: 0; }
 
     .about {
         flex-direction: column-reverse;
