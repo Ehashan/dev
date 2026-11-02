@@ -1,3 +1,81 @@
+/* ================= PRELOADER LOADING PAGE ================= */
+(function initPreloader() {
+    const preloader = document.getElementById('preloader');
+    const percentEl = document.getElementById('loader-percent');
+    const progressFill = document.getElementById('loader-progress-fill');
+    const statusEl = document.getElementById('loader-status');
+
+    if (!preloader) return;
+
+    // Lock scrolling while preloader is active
+    document.body.style.overflow = 'hidden';
+
+    const statusMessages = [
+        'Initializing modules...',
+        'Compiling Next.js components...',
+        'Connecting PostgreSQL database...',
+        'Establishing Cloud & DevOps link...',
+        'Finalizing UI & services...',
+        'System ready!'
+    ];
+
+    let currentProgress = 0;
+    let messageIndex = 0;
+
+    const interval = setInterval(() => {
+        // Smooth and steady cinematic progress pacing (~2.2s total)
+        if (currentProgress < 40) {
+            currentProgress += Math.floor(Math.random() * 2) + 1;
+        } else if (currentProgress < 75) {
+            currentProgress += Math.floor(Math.random() * 3) + 1;
+        } else if (currentProgress < 95) {
+            currentProgress += Math.floor(Math.random() * 2) + 1;
+        } else {
+            currentProgress += 1;
+        }
+
+        if (currentProgress > 100) currentProgress = 100;
+
+        if (progressFill) progressFill.style.width = currentProgress + '%';
+        if (percentEl) percentEl.textContent = currentProgress + '%';
+
+        // Update status text based on progress stage
+        const msgIdx = Math.min(Math.floor((currentProgress / 100) * statusMessages.length), statusMessages.length - 1);
+        if (msgIdx !== messageIndex && statusEl) {
+            messageIndex = msgIdx;
+            statusEl.textContent = statusMessages[messageIndex];
+        }
+
+        if (currentProgress >= 100) {
+            clearInterval(interval);
+            if (statusEl) statusEl.textContent = 'Welcome to Portfolio!';
+            
+            setTimeout(() => {
+                preloader.classList.add('fade-out');
+                document.body.style.overflow = '';
+                
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 900);
+            }, 500);
+        }
+    }, 35);
+
+    // Fallback safety timeout (max 4.5s)
+    setTimeout(() => {
+        if (!preloader.classList.contains('fade-out')) {
+            currentProgress = 100;
+            if (progressFill) progressFill.style.width = '100%';
+            if (percentEl) percentEl.textContent = '100%';
+            preloader.classList.add('fade-out');
+            document.body.style.overflow = '';
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 900);
+        }
+    }, 4500);
+})();
+
 /*  MENU TOGGLE  */
 let menuIcon = document.querySelector('#menu-icon');
 let navbar = document.querySelector('.navbar');
@@ -43,25 +121,64 @@ if (portfolioContainer && window.PortfolioManager) {
     window.PortfolioManager.renderToContainer(portfolioContainer);
 }
 
+/*  INTERACTIVE PORTFOLIO CATEGORY FILTER  */
+const filterButtons = document.querySelectorAll('.filter-btn');
+if (filterButtons.length > 0 && portfolioContainer) {
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const filterValue = btn.getAttribute('data-filter');
+            const allProjects = window.PortfolioManager ? window.PortfolioManager.getProjects() : [];
+
+            if (filterValue === 'all') {
+                window.PortfolioManager.renderToContainer(portfolioContainer);
+            } else {
+                const filtered = allProjects.filter(p => {
+                    const cat = (p.category || '').toLowerCase();
+                    const title = (p.title || '').toLowerCase();
+                    const search = filterValue.toLowerCase();
+                    return cat.includes(search) || title.includes(search);
+                });
+                portfolioContainer.replaceChildren(...filtered.map(p => window.PortfolioManager.createProjectCardElement(p)));
+            }
+        });
+    });
+}
+
 /* SCROLL REVEAL  */
 ScrollReveal({
     distance: '80px',
-    duration: 2000,
-    delay: 200
+    duration: 1800,
+    delay: 150
 });
 
-ScrollReveal().reveal('.home-content, .heading', { origin: 'top' });
-ScrollReveal().reveal('.home-img, .service-container, .portfolio-box, .contact', { origin: 'bottom' });
+ScrollReveal().reveal('.heading', { origin: 'top' });
+ScrollReveal().reveal('.home-img, .service-container, .skills-container, .portfolio-box, .contact-grid', { origin: 'bottom' });
 ScrollReveal().reveal('.home-content h1, .about-img', { origin: 'left' });
 ScrollReveal().reveal('.home-content p, .about-content', { origin: 'right' });
 
 /*  TYPED JS  */
 const typed = new Typed('.multiple-text', {
-    strings: ['Freelancer', 'Designer', 'Web/Software Developer'],
-    typeSpeed: 100,
-    backSpeed: 100,
-    backDelay: 100,
+    strings: [
+        'Next.js & Full-Stack Developer',
+        'Aspiring Cloud Engineer',
+        'Passionate Coder',
+        'DevOps Learner',
+        'Problem Solver'
+    ],
+    typeSpeed: 70,
+    backSpeed: 40,
+    backDelay: 1500,
     loop: true
+});
+
+/*  ADMIN DASHBOARD SHORTCUT (Ctrl + Shift + A)  */
+window.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+        window.location.href = 'admin.html';
+    }
 });
 
 /*  EMAILJS CONTACT FORM */
