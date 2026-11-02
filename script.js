@@ -85,6 +85,14 @@ menuIcon.onclick = () => {
     navbar.classList.toggle('active');
 };
 
+// Auto close mobile navbar when a link is clicked
+navbar.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+        menuIcon.classList.remove('bx-x');
+        navbar.classList.remove('active');
+    });
+});
+
 /*  SCROLL SECTIONS ACTIVE LINK  */
 let sections = document.querySelectorAll('section');
 let navLinks = document.querySelectorAll('header nav a');
