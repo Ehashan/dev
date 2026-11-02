@@ -84,14 +84,15 @@ ScrollReveal().reveal('.home-content p, .about-content', { origin: 'right' });
 /*  TYPED JS  */
 const typed = new Typed('.multiple-text', {
     strings: [
-        'Full-Stack Developer',
-        'AWS Cloud Engineer',
-        'MERN Stack Developer',
-        'AI & Machine Learning Dev'
+        'Aspiring Full-Stack Developer',
+        'Passionate Coder',
+        'DevOps Learner',
+        'Software Engineering Enthusiast',
+        'Problem Solver'
     ],
-    typeSpeed: 80,
-    backSpeed: 50,
-    backDelay: 1200,
+    typeSpeed: 70,
+    backSpeed: 40,
+    backDelay: 1500,
     loop: true
 });
 

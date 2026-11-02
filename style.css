@@ -254,6 +254,15 @@ section {
     color: #e5e7eb;
 }
 
+.home-content h3.hero-role span.multiple-text {
+    color: var(--main-color);
+    text-shadow: 0 0 20px rgba(8, 203, 0, 0.45);
+}
+
+.typed-cursor {
+    color: var(--main-color);
+}
+
 .home-content p.hero-desc {
     font-size: 1.6rem;
     color: var(--text-muted);
