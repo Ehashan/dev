@@ -170,11 +170,11 @@ ScrollReveal().reveal('.home-content p, .about-content', { origin: 'right' });
 /*  TYPED JS  */
 const typed = new Typed('.multiple-text', {
     strings: [
-        'Next.js & Full-Stack Developer',
-        'Aspiring Cloud Engineer',
-        'Passionate Coder',
-        'DevOps Learner',
-        'Problem Solver'
+        'Full Stack Developer',
+        'React & Next.js Developer',
+        'Cloud & DevOps Engineer',
+        'Python & ML Developer',
+        'Software Engineer'
     ],
     typeSpeed: 70,
     backSpeed: 40,

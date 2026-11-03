@@ -1,0 +1,17 @@
+# robots.txt for Eranda Hashan Developer Portfolio
+# Production URL: https://ehashan.github.io/dev/
+
+User-agent: *
+Allow: /
+Allow: /dev/
+
+# Disallow private administrative portal
+Disallow: /admin.html
+Disallow: /dev/admin.html
+Disallow: /admin.js
+Disallow: /dev/admin.js
+Disallow: /admin.css
+Disallow: /dev/admin.css
+
+# XML Sitemap
+Sitemap: https://ehashan.github.io/dev/sitemap.xml

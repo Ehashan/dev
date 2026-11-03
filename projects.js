@@ -159,8 +159,8 @@ const PortfolioManager = {
         box.className = 'portfolio-box';
         if (project.id) box.dataset.id = project.id;
 
-        // Project Title
-        const title = document.createElement('h4');
+        // Project Title (H3 maintains correct semantic heading hierarchy under H2)
+        const title = document.createElement('h3');
         title.className = 'project-name';
         title.textContent = project.title || 'Portfolio Project';
         box.appendChild(title);
@@ -185,7 +185,9 @@ const PortfolioManager = {
         if (images.length === 1) {
             const img = document.createElement('img');
             img.src = encodeURI(images[0]);
-            img.alt = project.title || 'Project Preview';
+            img.alt = `${project.title || 'Project Preview'} - Eranda Hashan Portfolio`;
+            img.loading = 'lazy';
+            img.decoding = 'async';
             img.onerror = () => { img.src = 'images/portfolio.png'; };
             imgWrapper.appendChild(img);
         } else {
@@ -197,7 +199,9 @@ const PortfolioManager = {
                 const sImg = document.createElement('img');
                 sImg.className = 'project-slide-img' + (idx === 0 ? ' active' : '');
                 sImg.src = encodeURI(src);
-                sImg.alt = `${project.title || 'Project Preview'} - Image ${idx + 1}`;
+                sImg.alt = `${project.title || 'Project Preview'} - Screenshot ${idx + 1}`;
+                sImg.loading = 'lazy';
+                sImg.decoding = 'async';
                 sImg.onerror = () => { sImg.src = 'images/portfolio.png'; };
                 slidesTrack.appendChild(sImg);
                 return sImg;

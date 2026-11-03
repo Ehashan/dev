@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://ehashan.github.io/dev/</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://ehashan.github.io/dev/images/my.png</image:loc>
+      <image:title>Eranda Hashan - Full Stack Developer &amp; Cloud Engineer</image:title>
+      <image:caption>Eranda Hashan professional portfolio portrait</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ehashan.github.io/dev/images/my23.png</image:loc>
+      <image:title>Eranda Hashan - Software Engineer Sri Lanka</image:title>
+      <image:caption>Eranda Hashan profile picture</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ehashan.github.io/dev/images/mern.png</image:loc>
+      <image:title>Online Shoe Market - MERN Stack E-Commerce Platform</image:title>
+      <image:caption>Full-stack MERN e-commerce web application preview</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ehashan.github.io/dev/images/cloud.png</image:loc>
+      <image:title>Cloud Migration Project (AWS Architecture)</image:title>
+      <image:caption>AWS 3-tier architecture with VPC, EC2, RDS, ALB, and CloudWatch</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ehashan.github.io/dev/images/portfolio.png</image:loc>
+      <image:title>Eranda Hashan Developer Portfolio Project</image:title>
+      <image:caption>Responsive developer portfolio website</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ehashan.github.io/dev/images/diabetes.png</image:loc>
+      <image:title>Diabetes Prediction ML Web Application</image:title>
+      <image:caption>Python and Streamlit machine learning application</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ehashan.github.io/dev/images/elawalu.png</image:loc>
+      <image:title>Mobile App Development Elawalu.lk</image:title>
+      <image:caption>Android marketplace application built with Java and Firebase</image:caption>
+    </image:image>
+  </url>
+</urlset>
