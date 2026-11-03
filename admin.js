@@ -22,6 +22,7 @@ let editingProjectId = null;
 let currentViewMode = 'grid'; // 'grid' | 'table'
 let currentSearchQuery = '';
 let currentCategoryFilter = 'all';
+let modalImages = []; // Stores 1 to 10 image paths/data URLs for project modal
 
 // DOM Elements
 const authGate = document.getElementById('auth-gate');
@@ -53,6 +54,9 @@ const inputImagePath = document.getElementById('proj-image-path');
 const fileInput = document.getElementById('proj-file-upload');
 const dropzone = document.getElementById('upload-dropzone');
 const presetGrid = document.getElementById('preset-image-grid');
+const selectedImagesGrid = document.getElementById('selected-images-grid');
+const imagesCountBadge = document.getElementById('images-count-badge');
+const btnAddUrlImg = document.getElementById('btn-add-url-img');
 
 // Link Inputs
 const linkGh1 = document.getElementById('link-gh1');
@@ -300,12 +304,22 @@ function createAdminProjectCardElement(p, fullIndex, isFirst, isLast) {
     const thumbWrap = document.createElement('div');
     thumbWrap.className = 'card-thumb-wrapper';
     const img = document.createElement('img');
-    const rawImage = p.image || 'images/portfolio.png';
-    const safeImage = window.PortfolioManager ? window.PortfolioManager.sanitizeUrl(rawImage) : rawImage;
+    const firstImg = (Array.isArray(p.images) && p.images.length > 0) ? p.images[0] : (p.image || 'images/portfolio.png');
+    const safeImage = window.PortfolioManager ? window.PortfolioManager.sanitizeUrl(firstImg) : firstImg;
     img.src = encodeURI(safeImage);
     img.alt = p.title || '';
     img.onerror = () => { img.src = 'images/portfolio.png'; };
     thumbWrap.appendChild(img);
+
+    // Multi-image badge if more than 1 image
+    if (Array.isArray(p.images) && p.images.length > 1) {
+        const multiBadge = document.createElement('span');
+        multiBadge.className = 'card-multi-badge';
+        const multiIcon = document.createElement('i');
+        multiIcon.className = 'bx bx-images';
+        multiBadge.append(multiIcon, document.createTextNode(` ${p.images.length}`));
+        thumbWrap.appendChild(multiBadge);
+    }
     card.appendChild(thumbWrap);
 
     // Card Body
@@ -410,14 +424,25 @@ function createAdminTableRowElement(p, fullIndex, isFirst, isLast) {
     tr.appendChild(tdIndex);
 
     const tdThumb = document.createElement('td');
+    tdThumb.style.position = 'relative';
     const thumbImg = document.createElement('img');
     thumbImg.className = 'table-thumb';
-    const rawImage = p.image || 'images/portfolio.png';
-    const safeImage = window.PortfolioManager ? window.PortfolioManager.sanitizeUrl(rawImage) : rawImage;
+    const firstImg = (Array.isArray(p.images) && p.images.length > 0) ? p.images[0] : (p.image || 'images/portfolio.png');
+    const safeImage = window.PortfolioManager ? window.PortfolioManager.sanitizeUrl(firstImg) : firstImg;
     thumbImg.src = encodeURI(safeImage);
     thumbImg.alt = p.title || '';
     thumbImg.onerror = () => { thumbImg.src = 'images/portfolio.png'; };
     tdThumb.appendChild(thumbImg);
+
+    if (Array.isArray(p.images) && p.images.length > 1) {
+        const badge = document.createElement('span');
+        badge.style.display = 'block';
+        badge.style.fontSize = '10px';
+        badge.style.color = 'var(--main-color)';
+        badge.style.fontWeight = '600';
+        badge.textContent = `${p.images.length} images`;
+        tdThumb.appendChild(badge);
+    }
     tr.appendChild(tdThumb);
 
     const tdInfo = document.createElement('td');
@@ -517,12 +542,133 @@ function populatePresetImages() {
     presetGrid.replaceChildren(...thumbs);
 }
 
-function selectPresetImage(path) {
-    inputImagePath.value = path;
-    document.querySelectorAll('.preset-thumb').forEach(el => {
-        el.classList.toggle('selected', el.getAttribute('data-path') === path);
-    });
+/**
+ * Multi-Image Gallery Manager (1 to 10 Images)
+ */
+function renderSelectedImages() {
+    if (!selectedImagesGrid) return;
+    selectedImagesGrid.replaceChildren();
+
+    if (modalImages.length === 0) {
+        const emptyDiv = document.createElement('div');
+        emptyDiv.className = 'selected-img-empty';
+        const emptyIcon = document.createElement('i');
+        emptyIcon.className = 'bx bx-images';
+        emptyIcon.style.fontSize = '26px';
+        emptyIcon.style.display = 'block';
+        emptyIcon.style.marginBottom = '6px';
+        emptyDiv.append(emptyIcon, document.createTextNode('No images added yet. Upload files, choose presets, or enter a URL (1 to 10 images required).'));
+        selectedImagesGrid.appendChild(emptyDiv);
+    } else {
+        modalImages.forEach((src, idx) => {
+            const card = document.createElement('div');
+            card.className = 'selected-img-card' + (idx === 0 ? ' is-main' : '');
+
+            const img = document.createElement('img');
+            const safeSrc = window.PortfolioManager ? window.PortfolioManager.sanitizeUrl(src) : src;
+            img.src = encodeURI(safeSrc);
+            img.alt = `Project Image ${idx + 1}`;
+            img.onerror = () => { img.src = 'images/portfolio.png'; };
+            card.appendChild(img);
+
+            const indexBadge = document.createElement('span');
+            indexBadge.className = 'selected-img-index';
+            indexBadge.textContent = idx === 0 ? '#1 (Main)' : `#${idx + 1}`;
+            card.appendChild(indexBadge);
+
+            // Shift left button (promote / reorder)
+            if (idx > 0) {
+                const shiftBtn = document.createElement('button');
+                shiftBtn.type = 'button';
+                shiftBtn.className = 'selected-img-shift';
+                shiftBtn.title = 'Move towards cover';
+                const shiftIcon = document.createElement('i');
+                shiftIcon.className = 'bx bx-chevron-left';
+                shiftBtn.appendChild(shiftIcon);
+                shiftBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    moveImageInModal(idx, idx - 1);
+                };
+                card.appendChild(shiftBtn);
+            }
+
+            // Remove button
+            const delBtn = document.createElement('button');
+            delBtn.type = 'button';
+            delBtn.className = 'selected-img-del';
+            delBtn.title = 'Remove this image';
+            delBtn.innerHTML = '&times;';
+            delBtn.onclick = (e) => {
+                e.stopPropagation();
+                removeImageFromModal(idx);
+            };
+            card.appendChild(delBtn);
+
+            selectedImagesGrid.appendChild(card);
+        });
+    }
+
+    // Update images count badge
+    if (imagesCountBadge) {
+        imagesCountBadge.textContent = `${modalImages.length} / 10 Images`;
+        imagesCountBadge.className = 'images-count-badge' + (modalImages.length >= 10 ? ' limit-reached' : (modalImages.length === 0 ? ' empty' : ''));
+    }
+}
+
+function addImageToModal(imgSrc) {
+    if (!imgSrc) return false;
+    if (modalImages.length >= 10) {
+        showToast('Maximum 10 images allowed per project', 'warning');
+        return false;
+    }
+    modalImages.push(imgSrc);
+    renderSelectedImages();
     updateLivePreview();
+    return true;
+}
+
+function removeImageFromModal(index) {
+    if (index >= 0 && index < modalImages.length) {
+        modalImages.splice(index, 1);
+        renderSelectedImages();
+        updateLivePreview();
+        showToast('Image removed', 'info');
+    }
+}
+
+function moveImageInModal(fromIndex, toIndex) {
+    if (fromIndex < 0 || fromIndex >= modalImages.length || toIndex < 0 || toIndex >= modalImages.length) return;
+    const item = modalImages.splice(fromIndex, 1)[0];
+    modalImages.splice(toIndex, 0, item);
+    renderSelectedImages();
+    updateLivePreview();
+}
+
+function selectPresetImage(path) {
+    if (modalImages.length >= 10) {
+        showToast('Maximum 10 images allowed per project', 'warning');
+        return;
+    }
+    if (addImageToModal(path)) {
+        showToast(`Added preset image (${modalImages.length}/10)`, 'success');
+    }
+}
+
+function handleAddUrlImage() {
+    const rawUrl = inputImagePath ? inputImagePath.value.trim() : '';
+    if (!rawUrl) {
+        showToast('Please enter an image path or URL first', 'error');
+        if (inputImagePath) inputImagePath.focus();
+        return;
+    }
+    if (modalImages.length >= 10) {
+        showToast('Maximum 10 images allowed per project', 'warning');
+        return;
+    }
+    if (addImageToModal(rawUrl)) {
+        if (inputImagePath) inputImagePath.value = '';
+        showToast(`Image URL added (${modalImages.length}/10)`, 'success');
+    }
 }
 
 /**
@@ -530,7 +676,7 @@ function selectPresetImage(path) {
  */
 function setupLivePreview() {
     const inputs = [
-        inputTitle, inputCategory, inputDescription, inputImagePath,
+        inputTitle, inputCategory, inputDescription,
         linkGh1, linkGh2, linkDemo, linkDemoDisabled, linkCustomLabel, linkCustomUrl
     ];
 
@@ -589,12 +735,13 @@ function getFormProjectData() {
         });
     }
 
-    const rawImg = inputImagePath.value.trim() || 'images/portfolio.png';
+    const finalImages = (modalImages && modalImages.length > 0) ? [...modalImages] : ['images/portfolio.png'];
     return {
         id: editingProjectId || `proj-${Date.now()}`,
         title: inputTitle.value.trim() || 'New Portfolio Project',
         category: inputCategory.value.trim() || 'Web Dev',
-        image: encodeURI(rawImg),
+        image: encodeURI(finalImages[0]),
+        images: finalImages.map(img => encodeURI(img)),
         description: inputDescription.value.trim() || 'Add a compelling description of what technologies you used, the core architecture, and key features of this project.',
         links: links.length > 0 ? links : [
             { label: "GitHub", url: "#", icon: "bx bxl-github" },
@@ -625,8 +772,11 @@ function openAddModal() {
     editingProjectId = null;
     setModalTitle('bx bx-plus-circle', 'Add New Project');
     projectForm.reset();
-    inputImagePath.value = 'images/portfolio.png';
+    if (inputImagePath) inputImagePath.value = '';
     linkDemoDisabled.checked = false;
+
+    modalImages = ['images/portfolio.png'];
+    renderSelectedImages();
 
     // Reset preset image highlights
     document.querySelectorAll('.preset-thumb').forEach(el => el.classList.remove('selected'));
@@ -646,11 +796,20 @@ function openEditModal(projectId) {
     inputTitle.value = proj.title || '';
     inputCategory.value = proj.category || 'Web Dev';
     inputDescription.value = proj.description || '';
-    inputImagePath.value = proj.image || 'images/portfolio.png';
+    if (inputImagePath) inputImagePath.value = '';
 
-    // Highlight preset image if matched
+    if (Array.isArray(proj.images) && proj.images.length > 0) {
+        modalImages = [...proj.images];
+    } else if (proj.image) {
+        modalImages = [proj.image];
+    } else {
+        modalImages = ['images/portfolio.png'];
+    }
+    renderSelectedImages();
+
+    // Highlight preset images if matched
     document.querySelectorAll('.preset-thumb').forEach(el => {
-        el.classList.toggle('selected', el.getAttribute('data-path') === proj.image);
+        el.classList.toggle('selected', modalImages.includes(el.getAttribute('data-path')));
     });
 
     // Populate links
@@ -706,6 +865,11 @@ function handleSaveProject(e) {
     if (!description) {
         showToast('Please enter a project description', 'error');
         inputDescription.focus();
+        return;
+    }
+
+    if (modalImages.length === 0) {
+        showToast('Please add at least 1 project image (up to 10 allowed)', 'error');
         return;
     }
 
@@ -793,22 +957,44 @@ function handleResetDefaults() {
 }
 
 /**
- * File Upload Handling (Drag & Drop or File Input)
+ * File Upload Handling (Multiple files, 1 to 10 images)
  */
-function handleFileUpload(file) {
-    if (!file || !file.type.startsWith('image/')) {
-        showToast('Please select a valid image file (PNG, JPG, WebP)', 'error');
+function handleFilesUpload(fileList) {
+    if (!fileList || fileList.length === 0) return;
+
+    const files = Array.from(fileList).filter(f => f.type && f.type.startsWith('image/'));
+    if (files.length === 0) {
+        showToast('Please select valid image files (PNG, JPG, WebP)', 'error');
         return;
     }
 
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        inputImagePath.value = e.target.result;
-        document.querySelectorAll('.preset-thumb').forEach(el => el.classList.remove('selected'));
-        updateLivePreview();
-        showToast(`Image loaded: ${file.name}`, 'success');
-    };
-    reader.readAsDataURL(file);
+    const availableSlots = 10 - modalImages.length;
+    if (availableSlots <= 0) {
+        showToast('Maximum 10 images already reached. Remove some before adding more.', 'warning');
+        return;
+    }
+
+    const filesToLoad = files.slice(0, availableSlots);
+    if (files.length > availableSlots) {
+        showToast(`Only adding ${availableSlots} image(s) to stay within the 10 image limit.`, 'warning');
+    }
+
+    let loadedCount = 0;
+    filesToLoad.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            modalImages.push(e.target.result);
+            loadedCount++;
+            if (loadedCount === filesToLoad.length) {
+                renderSelectedImages();
+                updateLivePreview();
+                showToast(`Loaded ${loadedCount} image(s) successfully! (${modalImages.length}/10)`, 'success');
+            }
+        };
+        reader.readAsDataURL(file);
+    });
+
+    if (fileInput) fileInput.value = '';
 }
 
 /**
@@ -924,11 +1110,94 @@ const PortfolioManager = {
         const imgWrapper = document.createElement('div');
         imgWrapper.className = 'project-image-wrapper';
 
-        const img = document.createElement('img');
-        img.src = this.sanitizeUrl(project.image || 'images/portfolio.png');
-        img.alt = project.title || 'Project Preview';
-        img.onerror = () => { img.src = 'images/portfolio.png'; };
-        imgWrapper.appendChild(img);
+        let rawImages = [];
+        if (Array.isArray(project.images) && project.images.length > 0) {
+            rawImages = project.images;
+        } else if (project.image) {
+            rawImages = [project.image];
+        } else {
+            rawImages = ['images/portfolio.png'];
+        }
+        const images = rawImages.slice(0, 10).map(img => this.sanitizeUrl(img)).filter(Boolean);
+        if (images.length === 0) images.push('images/portfolio.png');
+
+        if (images.length === 1) {
+            const img = document.createElement('img');
+            img.src = encodeURI(images[0]);
+            img.alt = project.title || 'Project Preview';
+            img.onerror = () => { img.src = 'images/portfolio.png'; };
+            imgWrapper.appendChild(img);
+        } else {
+            const slidesTrack = document.createElement('div');
+            slidesTrack.className = 'project-slides-track';
+
+            const slideImgs = images.map((src, idx) => {
+                const sImg = document.createElement('img');
+                sImg.className = 'project-slide-img' + (idx === 0 ? ' active' : '');
+                sImg.src = encodeURI(src);
+                sImg.alt = \`\${project.title || 'Project Preview'} - Image \${idx + 1}\`;
+                sImg.onerror = () => { sImg.src = 'images/portfolio.png'; };
+                slidesTrack.appendChild(sImg);
+                return sImg;
+            });
+            imgWrapper.appendChild(slidesTrack);
+
+            const badge = document.createElement('div');
+            badge.className = 'project-slide-badge';
+            const badgeIcon = document.createElement('i');
+            badgeIcon.className = 'bx bx-images';
+            const badgeText = document.createElement('span');
+            badgeText.className = 'badge-text';
+            badgeText.textContent = \`1 / \${images.length}\`;
+            badge.append(badgeIcon, badgeText);
+            imgWrapper.appendChild(badge);
+
+            const dotsContainer = document.createElement('div');
+            dotsContainer.className = 'project-slider-dots';
+            const dots = images.map((_, idx) => {
+                const dot = document.createElement('span');
+                dot.className = 'slider-dot' + (idx === 0 ? ' active' : '');
+                dot.setAttribute('role', 'button');
+                dot.setAttribute('aria-label', \`Go to image \${idx + 1}\`);
+                dot.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    goToSlide(idx);
+                });
+                dotsContainer.appendChild(dot);
+                return dot;
+            });
+            imgWrapper.appendChild(dotsContainer);
+
+            let currentSlideIndex = 0;
+            let slideInterval = null;
+
+            function goToSlide(nextIndex) {
+                slideImgs[currentSlideIndex].classList.remove('active');
+                dots[currentSlideIndex].classList.remove('active');
+                currentSlideIndex = (nextIndex + images.length) % images.length;
+                slideImgs[currentSlideIndex].classList.add('active');
+                dots[currentSlideIndex].classList.add('active');
+                badgeText.textContent = \`\${currentSlideIndex + 1} / \${images.length}\`;
+            }
+
+            function startAutoPlay() {
+                if (slideInterval) clearInterval(slideInterval);
+                slideInterval = setInterval(() => {
+                    goToSlide(currentSlideIndex + 1);
+                }, 2000);
+            }
+
+            function pauseAutoPlay() {
+                if (slideInterval) {
+                    clearInterval(slideInterval);
+                    slideInterval = null;
+                }
+            }
+
+            startAutoPlay();
+            box.addEventListener('mouseenter', pauseAutoPlay);
+            box.addEventListener('mouseleave', startAutoPlay);
+        }
 
         const layer = document.createElement('div');
         layer.className = 'portfolio-layer';
@@ -965,7 +1234,38 @@ const PortfolioManager = {
         return box;
     },
     renderProjectCardHTML(project) {
-        const safeImage = this.sanitizeUrl(project.image || 'images/portfolio.png');
+        let rawImages = [];
+        if (Array.isArray(project.images) && project.images.length > 0) {
+            rawImages = project.images;
+        } else if (project.image) {
+            rawImages = [project.image];
+        } else {
+            rawImages = ['images/portfolio.png'];
+        }
+        const images = rawImages.slice(0, 10).map(img => this.sanitizeUrl(img)).filter(Boolean);
+        if (images.length === 0) images.push('images/portfolio.png');
+
+        let imageSectionHTML = '';
+        if (images.length === 1) {
+            imageSectionHTML = \`<img src="\${images[0]}" alt="\${this.escapeHTML(project.title || '')}" onerror="this.src='images/portfolio.png'">\`;
+        } else {
+            const slidesHTML = images.map((src, i) =>
+                \`<img class="project-slide-img\${i === 0 ? ' active' : ''}" src="\${src}" alt="\${this.escapeHTML(project.title || '')} - Image \${i + 1}" onerror="this.src='images/portfolio.png'">\`
+            ).join('');
+            const dotsHTML = images.map((_, i) =>
+                \`<span class="slider-dot\${i === 0 ? ' active' : ''}"></span>\`
+            ).join('');
+            imageSectionHTML = \`
+                <div class="project-slides-track">
+                    \${slidesHTML}
+                </div>
+                <div class="project-slide-badge"><i class='bx bx-images'></i> <span class="badge-text">1 / \${images.length}</span></div>
+                <div class="project-slider-dots">
+                    \${dotsHTML}
+                </div>
+            \`;
+        }
+
         const linksHTML = (project.links || []).map(link => {
             const safeUrl = this.sanitizeUrl(link.url);
             const isDisabled = link.disabled || safeUrl === '#';
@@ -984,7 +1284,7 @@ const PortfolioManager = {
             <div class="portfolio-box" data-id="\${this.escapeHTML(project.id || '')}">
                 <h4 class="project-name">\${this.escapeHTML(project.title || '')}</h4>
                 <div class="project-image-wrapper">
-                    <img src="\${safeImage}" alt="\${this.escapeHTML(project.title || '')}" onerror="this.src='images/portfolio.png'">
+                    \${imageSectionHTML}
                     <div class="portfolio-layer">
                         <p>\${this.escapeHTML(project.description || '')}</p>
                     </div>
@@ -1244,11 +1544,11 @@ function setupEventListeners() {
     // Project Form
     projectForm.addEventListener('submit', handleSaveProject);
 
-    // File Upload
+    // File Upload (1 to 10 images)
     dropzone.addEventListener('click', () => fileInput.click());
     fileInput.addEventListener('change', (e) => {
-        if (e.target.files && e.target.files[0]) {
-            handleFileUpload(e.target.files[0]);
+        if (e.target.files && e.target.files.length > 0) {
+            handleFilesUpload(e.target.files);
         }
     });
 
@@ -1262,10 +1562,23 @@ function setupEventListeners() {
     dropzone.addEventListener('drop', (e) => {
         e.preventDefault();
         dropzone.style.borderColor = 'var(--border-color)';
-        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-            handleFileUpload(e.dataTransfer.files[0]);
+        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+            handleFilesUpload(e.dataTransfer.files);
         }
     });
+
+    // Add Image via URL button & Enter key
+    if (btnAddUrlImg) {
+        btnAddUrlImg.addEventListener('click', handleAddUrlImage);
+    }
+    if (inputImagePath) {
+        inputImagePath.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                handleAddUrlImage();
+            }
+        });
+    }
 
     // Close modals on backdrop click or ESC
     window.addEventListener('keydown', (e) => {

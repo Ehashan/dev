@@ -553,6 +553,30 @@ body::after { bottom: -100px; right: -100px; }
     transform: scale(1.05);
 }
 
+.card-multi-badge {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(18, 22, 31, 0.85);
+    color: #fff;
+    border: 1px solid rgba(8, 203, 0, 0.4);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    backdrop-filter: blur(4px);
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.card-multi-badge i {
+    color: var(--main-color);
+    font-size: 13px;
+}
+
 .card-body {
     padding: 20px;
     flex: 1;
@@ -877,6 +901,142 @@ textarea.form-control {
     resize: vertical;
     min-height: 90px;
     line-height: 1.5;
+}
+
+/* Multi-Image Gallery Manager in Modal (1 to 10 Images) */
+.images-count-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: rgba(8, 203, 0, 0.15);
+    color: var(--main-color);
+    border: 1px solid rgba(8, 203, 0, 0.35);
+}
+
+.images-count-badge.limit-reached {
+    background: rgba(245, 158, 11, 0.15);
+    color: #f59e0b;
+    border-color: rgba(245, 158, 11, 0.4);
+}
+
+.images-count-badge.empty {
+    background: rgba(239, 68, 68, 0.15);
+    color: var(--danger-color);
+    border-color: rgba(239, 68, 68, 0.35);
+}
+
+.selected-images-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 10px;
+    padding: 12px;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    margin-bottom: 14px;
+    min-height: 80px;
+    align-items: center;
+}
+
+.selected-img-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 12px;
+    padding: 16px 8px;
+}
+
+.selected-img-card {
+    position: relative;
+    height: 75px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 2px solid var(--border-color);
+    background: var(--second-color);
+    transition: var(--transition);
+}
+
+.selected-img-card:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.selected-img-card.is-main {
+    border-color: var(--main-color);
+    box-shadow: 0 0 10px var(--main-glow);
+}
+
+.selected-img-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.selected-img-index {
+    position: absolute;
+    bottom: 3px;
+    left: 3px;
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 600;
+    padding: 1px 5px;
+    border-radius: 3px;
+    pointer-events: none;
+    letter-spacing: 0.3px;
+}
+
+.selected-img-card.is-main .selected-img-index {
+    background: var(--main-color);
+    color: #111;
+}
+
+.selected-img-del {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(239, 68, 68, 0.9);
+    color: #fff;
+    border: none;
+    font-size: 12px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.selected-img-del:hover {
+    background: #dc2626;
+    transform: scale(1.15);
+}
+
+.selected-img-shift {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    border: none;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.selected-img-shift:hover {
+    background: var(--main-color);
+    color: #111;
 }
 
 /* Image Selector Tabs */

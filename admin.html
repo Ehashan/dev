@@ -5,7 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard | Eranda Hashan Portfolio</title>
+    <meta name="robots" content="noindex, nofollow, noarchive">
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
     <!-- Boxicons -->
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     
@@ -200,42 +205,59 @@
                                 </datalist>
                             </div>
 
-                            <!-- Image Picker -->
+                            <!-- Multi-Image Gallery Manager (1 to 10 Images) -->
                             <div class="form-group">
-                                <label class="form-label">Project Image / Thumbnail <span class="req">*</span></label>
-                                
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                    <label class="form-label" style="margin: 0;">Project Images (1 to 10 Images) <span class="req">*</span></label>
+                                    <span class="images-count-badge" id="images-count-badge">0 / 10 Images</span>
+                                </div>
+                                <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">
+                                    Add 1 to 10 images. When more than one image is added, user view will auto-skip every 2 seconds. First image (#1) is the primary cover.
+                                </p>
+
+                                <!-- Currently Selected Images Gallery -->
+                                <div class="selected-images-grid" id="selected-images-grid">
+                                    <!-- Rendered dynamically -->
+                                </div>
+
                                 <div class="image-picker-tabs">
-                                    <button type="button" class="img-tab-btn active" data-tab="presets" onclick="switchImageTab('presets')">
-                                        <i class='bx bx-images'></i> Existing Images
+                                    <button type="button" class="img-tab-btn active" data-tab="upload" onclick="switchImageTab('upload')">
+                                        <i class='bx bx-upload'></i> Upload Files (Up to 10)
                                     </button>
-                                    <button type="button" class="img-tab-btn" data-tab="upload" onclick="switchImageTab('upload')">
-                                        <i class='bx bx-upload'></i> Upload File
+                                    <button type="button" class="img-tab-btn" data-tab="presets" onclick="switchImageTab('presets')">
+                                        <i class='bx bx-images'></i> Choose from Presets
                                     </button>
                                     <button type="button" class="img-tab-btn" data-tab="url" onclick="switchImageTab('url')">
                                         <i class='bx bx-link'></i> Path / URL
                                     </button>
                                 </div>
 
+                                <!-- Upload file tab -->
+                                <div id="tab-upload">
+                                    <input type="file" id="proj-file-upload" accept="image/*" multiple style="display: none;">
+                                    <div class="file-upload-dropzone" id="upload-dropzone">
+                                        <i class='bx bx-cloud-upload'></i>
+                                        <p><strong>Click to browse</strong> or drag &amp; drop 1 to 10 images here</p>
+                                        <p style="font-size: 11px; margin-top: 4px;">Select multiple files (PNG, JPG, WebP) &bull; Up to 10 images total</p>
+                                    </div>
+                                </div>
+
                                 <!-- Preset images tab -->
-                                <div id="tab-presets">
+                                <div id="tab-presets" style="display: none;">
+                                    <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">Click any preset image to add it to your project gallery:</p>
                                     <div class="image-preset-grid" id="preset-image-grid">
                                         <!-- Loaded dynamically -->
                                     </div>
                                 </div>
 
-                                <!-- Upload file tab -->
-                                <div id="tab-upload" style="display: none;">
-                                    <input type="file" id="proj-file-upload" accept="image/*" style="display: none;">
-                                    <div class="file-upload-dropzone" id="upload-dropzone">
-                                        <i class='bx bx-cloud-upload'></i>
-                                        <p><strong>Click to browse</strong> or drag &amp; drop an image here</p>
-                                        <p style="font-size: 11px; margin-top: 4px;">PNG, JPG, WebP supported</p>
-                                    </div>
-                                </div>
-
                                 <!-- Custom URL tab -->
                                 <div id="tab-url" style="display: none;">
-                                    <input type="text" id="proj-image-path" class="form-control" placeholder="images/your-image.png or https://...">
+                                    <div style="display: flex; gap: 8px;">
+                                        <input type="text" id="proj-image-path" class="form-control" placeholder="images/your-image.png or https://...">
+                                        <button type="button" class="btn-secondary" id="btn-add-url-img" style="white-space: nowrap;">
+                                            <i class='bx bx-plus'></i> Add Image
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 

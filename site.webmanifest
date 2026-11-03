@@ -1,0 +1,27 @@
+{
+  "name": "Eranda Hashan - Full Stack Developer Portfolio",
+  "short_name": "Eranda Hashan",
+  "description": "Portfolio of Eranda Hashan - Full Stack Developer & Cloud Engineer from Sri Lanka.",
+  "start_url": "/dev/",
+  "scope": "/dev/",
+  "display": "standalone",
+  "background_color": "#12161f",
+  "theme_color": "#12161f",
+  "icons": [
+    {
+      "src": "images/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

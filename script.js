@@ -85,6 +85,14 @@ menuIcon.onclick = () => {
     navbar.classList.toggle('active');
 };
 
+// Auto close mobile navbar when a link is clicked
+navbar.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+        menuIcon.classList.remove('bx-x');
+        navbar.classList.remove('active');
+    });
+});
+
 /*  SCROLL SECTIONS ACTIVE LINK  */
 let sections = document.querySelectorAll('section');
 let navLinks = document.querySelectorAll('header nav a');
@@ -162,11 +170,11 @@ ScrollReveal().reveal('.home-content p, .about-content', { origin: 'right' });
 /*  TYPED JS  */
 const typed = new Typed('.multiple-text', {
     strings: [
-        'Next.js & Full-Stack Developer',
-        'Aspiring Cloud Engineer',
-        'Passionate Coder',
-        'DevOps Learner',
-        'Problem Solver'
+        'Full Stack Developer',
+        'React & Next.js Developer',
+        'Cloud & DevOps Engineer',
+        'Python & ML Developer',
+        'Software Engineer'
     ],
     typeSpeed: 70,
     backSpeed: 40,
