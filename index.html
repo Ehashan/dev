@@ -65,7 +65,7 @@
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
     <!-- Web Fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;600;700;800&family=Roboto:wght@300;400;500;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap">
 
     <!-- Boxicons & CSS -->
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
@@ -209,36 +209,87 @@
     </header>
 
     <section class="home" id="home">
+
+        <!-- Hero background animated particles -->
+        <div class="hero-bg-grid"></div>
+        <div class="hero-spotlight"></div>
+
         <div class="home-content">
             <div class="status-badge">
                 <span class="status-dot"></span>
                 <span>Available for Full-time &amp; Freelance Work</span>
             </div>
-            <h3 class="hero-greeting">Hello, It's Me</h3>
-            <h1 class="hero-name">Eranda Hashan</h1>
-            <h3 class="hero-role">And I'm a <span class="multiple-text"></span></h3>
-            <p class="hero-desc">Full Stack Developer &amp; Cloud Computing enthusiast based in Sri Lanka, passionate about building robust web applications, scalable cloud infrastructure with AWS, and AI-powered solutions.</p>
 
+            <!-- Terminal-style intro line -->
+            <div class="hero-terminal-line">
+                <span class="terminal-prompt">~/portfolio</span>
+                <span class="terminal-cursor-blink">▌</span>
+            </div>
+
+            <h1 class="hero-name">Eranda<br><span class="hero-name-accent">Hashan</span></h1>
+
+            <h3 class="hero-role">
+                <span class="role-prefix">&lt;</span>
+                <span class="multiple-text"></span>
+                <span class="role-suffix"> /&gt;</span>
+            </h3>
+
+            <p class="hero-desc">Full Stack Developer &amp; Cloud Engineer based in <span class="highlight-text">Sri Lanka</span> — crafting scalable web apps with <span class="highlight-text">React</span>, <span class="highlight-text">Next.js</span>, AWS cloud infrastructure, and AI-powered solutions.</p>
+
+            <!-- Mini tech stack row -->
+            <div class="hero-tech-stack">
+                <span class="tech-chip"><i class='bx bxl-react'></i> React</span>
+                <span class="tech-chip"><i class='bx bxl-nodejs'></i> Node.js</span>
+                <span class="tech-chip"><i class='bx bxl-aws'></i> AWS</span>
+                <span class="tech-chip"><i class='bx bxl-python'></i> Python</span>
+                <span class="tech-chip tech-chip-more">+8 more</span>
+            </div>
 
             <div class="hero-actions">
                 <div class="hero-btns">
-                    <a href="#portfolio" class="btn"><i class='bx bx-rocket'></i> Explore Projects</a>
-                    <a href="assets/Eranda_Hashan.pdf" class="btn btn-outline" download><i class='bx bx-download'></i> Download CV</a>
+                    <a href="#portfolio" class="btn btn-hero-primary">
+                        <i class='bx bx-rocket'></i>
+                        <span>View Projects</span>
+                        <span class="btn-shine"></span>
+                    </a>
+                    <a href="assets/Eranda_Hashan.pdf" class="btn btn-outline" download>
+                        <i class='bx bx-download'></i> Download CV
+                    </a>
                 </div>
 
                 <div class="social-media">
-                    <a href="https://lk.linkedin.com/in/eranda-hashan-405438254" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" title="LinkedIn"><i class='bx bxl-linkedin'></i></a>
-                    <a href="https://github.com/Ehashan" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" title="GitHub"><i class='bx bxl-github'></i></a>
-                    <a href="mailto:Erandahashan0103@gmail.com" aria-label="Email Eranda Hashan" title="Email Me"><i class='bx bx-envelope'></i></a>
-                    <a href="#" aria-label="Facebook Profile" title="Facebook"><i class='bx bxl-facebook'></i></a>
-                    <a href="#" aria-label="Instagram Profile" title="Instagram"><i class='bx bxl-instagram'></i></a>
+                    <a href="https://lk.linkedin.com/in/eranda-hashan-405438254" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn"><i class='bx bxl-linkedin'></i></a>
+                    <a href="https://github.com/Ehashan" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub"><i class='bx bxl-github'></i></a>
+                    <a href="mailto:Erandahashan0103@gmail.com" aria-label="Email" title="Email Me"><i class='bx bx-envelope'></i></a>
+                    <a href="#" aria-label="Facebook" title="Facebook"><i class='bx bxl-facebook'></i></a>
+                    <a href="#" aria-label="Instagram" title="Instagram"><i class='bx bxl-instagram'></i></a>
                 </div>
             </div>
 
+            <!-- Stats row -->
+            <div class="hero-stats-row">
+                <div class="hero-stat-pill">
+                    <span class="hsp-num">7+</span>
+                    <span class="hsp-label">Projects</span>
+                </div>
+                <div class="hsp-sep"></div>
+                <div class="hero-stat-pill">
+                    <span class="hsp-num">AWS</span>
+                    <span class="hsp-label">Cloud</span>
+                </div>
+                <div class="hsp-sep"></div>
+                <div class="hero-stat-pill">
+                    <span class="hsp-num">AI/ML</span>
+                    <span class="hsp-label">Expert</span>
+                </div>
+            </div>
         </div>
 
         <div class="home-img">
             <div class="avatar-glow-ring"></div>
+            <!-- Orbital ring decoration -->
+            <div class="orbital-ring orbital-ring-1"></div>
+            <div class="orbital-ring orbital-ring-2"></div>
             <img src="images/my.png" alt="Eranda Hashan - Full Stack Developer and Cloud Engineer" fetchpriority="high" decoding="async">
 
             <!-- Floating Tech Badges -->
@@ -265,6 +316,22 @@
             <h2 class="heading">About <span>Me</span></h2>
             <h3>Aspiring <span>Software &amp; Cloud Engineer</span></h3>
             <p>I am an undergraduate software engineer in my final year at Horizon Campus, pursuing a BSc (Hons) degree in Information Communication Technology in Colombo, Sri Lanka. As a passionate Full Stack Developer and Cloud Engineer, I specialize in building scalable web applications with JavaScript, React, Next.js, and Python, coupled with cloud architectures on AWS. Dedicated to clean code, continuous learning, and DevOps practices, I look forward to contributing impactful software solutions to engineering teams worldwide.</p>
+            <div class="about-stats">
+                <div class="about-stat-item">
+                    <span class="about-stat-num">7+</span>
+                    <span class="about-stat-label">Projects Built</span>
+                </div>
+                <div class="about-stat-divider"></div>
+                <div class="about-stat-item">
+                    <span class="about-stat-num">5+</span>
+                    <span class="about-stat-label">Technologies</span>
+                </div>
+                <div class="about-stat-divider"></div>
+                <div class="about-stat-item">
+                    <span class="about-stat-num">AWS</span>
+                    <span class="about-stat-label">Cloud Certified</span>
+                </div>
+            </div>
             <a href="#skills" class="btn"><i class='bx bx-brain'></i> View Skills</a>
         </div>
     </section>
@@ -343,7 +410,7 @@
 
 
     <section class="service" id="services">
-        <h2 class="heading">My <span>Services</span></h2>
+        <h2 class="heading">What I <span>Do</span></h2>
 
         <div class="service-container">
             <div class="service-box">
@@ -377,7 +444,7 @@
     </section>
 
     <section class="portfolio" id="portfolio">
-        <h2 class="heading">Latest <span>Projects</span></h2>
+        <h2 class="heading">Featured <span>Projects</span></h2>
 
         <!-- Interactive Portfolio Filters -->
         <div class="portfolio-filters">
@@ -597,7 +664,7 @@
     </section>
 
     <section class="contact" id="contact">
-        <h2 class="heading">Contact <span>Me!</span></h2>
+        <h2 class="heading">Get In <span>Touch</span></h2>
 
         <div class="contact-grid">
             <!-- Contact Info Cards -->
@@ -667,16 +734,15 @@
     <footer class="footer">
         <div class="footer-class">
             <p>
-                Copyright &copy; 2025 My Portfolio. All rights reserved.
+                &copy; 2025 Eranda Hashan &mdash; Built with passion & modern tech.
                 <a href="admin.html" class="footer-admin-link" title="Admin Panel" rel="nofollow">
-                    <i class='bx bx-lock-alt'></i> Admin
+                    <i class='bx bx-lock-alt'></i>
                 </a>
             </p>
         </div>
         <div class="footer-iconTop">
-            <a href="#home" aria-label="Back to top of page"><i class='bx bxs-up-arrow-circle'></i></a>
+            <a href="#home" aria-label="Back to top of page"><i class='bx bx-chevron-up'></i></a>
         </div>
-
     </footer>
 
     <script src="projects.js" defer></script>
